@@ -1,0 +1,12 @@
+﻿using DevTech.RegistroContatos.Dominio.Enums;
+
+namespace DevTech.RegistroContatos.Dominio.Entidades;
+
+public class Contato
+{
+    public Guid Id { get; init; }
+    public string ContatoDesc { get; set; } = string.Empty;
+    public ETipoContato Tipo { get; set; }
+
+    public Pessoa Pessoa { get; set; } = null!;
+}
