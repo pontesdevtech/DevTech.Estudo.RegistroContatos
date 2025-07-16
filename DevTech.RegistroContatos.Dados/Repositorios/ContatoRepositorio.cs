@@ -33,7 +33,8 @@ namespace DevTech.RegistroContatos.Dados.Repositorios
 
         public async Task<Contato?> Salvar(Contato obj)
         {
-            if (BuscarPorId(obj.Id) is null)
+            var objExiste = await _contexto.Contatos.AnyAsync(x => x.Id.Equals(obj.Id));
+            if (objExiste is false)
             {
                 _contexto.Contatos.Add(obj);
             }

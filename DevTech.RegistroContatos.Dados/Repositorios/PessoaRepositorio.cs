@@ -12,7 +12,7 @@ namespace DevTech.RegistroContatos.Dados.Repositorios
 
         public async Task<Pessoa?> BuscarPorId(Guid id)
         {
-            return await _contexto.Pessoas.FirstOrDefaultAsync(x => x.Id.Equals(id));
+            return await _contexto.Pessoas.Include(x => x.Contatos).FirstOrDefaultAsync(x => x.Id.Equals(id));
         }
 
         public async Task Excluir(Pessoa obj)
@@ -23,17 +23,18 @@ namespace DevTech.RegistroContatos.Dados.Repositorios
 
         public async Task<ICollection<Pessoa>?> Listar()
         {
-            return await _contexto.Pessoas.ToListAsync();
+            return await _contexto.Pessoas.Include(x => x.Contatos).ToListAsync();
         }
 
         public async Task<ICollection<Pessoa>?> Listar(Expression<Func<Pessoa, bool>> condicao)
         {
-            return await _contexto.Pessoas.Where(condicao).ToListAsync();
+            return await _contexto.Pessoas.Include(x => x.Contatos).Where(condicao).ToListAsync();
         }
 
         public async Task<Pessoa?> Salvar(Pessoa obj)
         {
-            if (BuscarPorId(obj.Id) is null)
+            var objExiste = await _contexto.Pessoas.AnyAsync(x => x.Id.Equals(obj.Id));
+            if (objExiste is false)
             {
                 _contexto.Pessoas.Add(obj);
             }
