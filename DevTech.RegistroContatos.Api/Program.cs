@@ -9,6 +9,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<Contexto>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("dev")));
 builder.Services.AddScoped<PessoaRepositorio>();
+builder.Services.AddScoped<ContatoRepositorio>();
+builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =>
+{
+    options.SerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+    options.SerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
+});
 
 // Swagger
 builder.Services.AddEndpointsApiExplorer();
@@ -17,9 +23,13 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 app.MapPessoaEndpoints();
+app.MapContatoEndpoints();
 
-app.UseSwagger();
-app.UseSwaggerUI();
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 app.UseHttpsRedirection();
 
