@@ -7,5 +7,5 @@ public class Pessoa
     public DateTime DtNascimento{ get; set; }
     public string Cpf { get; set; } = string.Empty;
 
-    public List<Contato> Contatos = [];
+    public List<Contato> Contatos { get; set; } = [];
 }
