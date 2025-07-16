@@ -1,16 +1,17 @@
 ﻿using DevTech.RegistroContatos.Dados.Repositorios;
 using DevTech.RegistroContatos.Dados.Servicos;
 using DevTech.RegistroContatos.Dominio.Entidades;
+using DevTech.RegistroContatos.Dominio.Enums;
 
 namespace DevTech.RegistroContatos.Api.Endpoints;
 
-public static class PessoaEndpoint
+public static class ContatoEndpoint
 {
-    public static RouteGroupBuilder MapPessoaEndpoints(this WebApplication app)
+    public static RouteGroupBuilder MapContatoEndpoints(this WebApplication app)
     {
-        var grupo = app.MapGroup("/pessoas").WithTags("Pessoas");
+        var grupo = app.MapGroup("/contatos").WithTags("Contatos");
 
-        grupo.MapGet("/", async (PessoaRepositorio repositorio) =>
+        grupo.MapGet("/", async (ContatoRepositorio repositorio) =>
         {
             try
             {
@@ -22,11 +23,11 @@ public static class PessoaEndpoint
             }
         });
 
-        grupo.MapGet("/nome/{nome}", async (PessoaRepositorio repositorio, string nome) =>
+        grupo.MapGet("/contato_descricao/{contatoDesc}", async (ContatoRepositorio repositorio, string contatoDesc) =>
         {
             try
             {
-                return await repositorio.ListarPorNome(nome);
+                return await repositorio.ListarPorContatoDescricao(contatoDesc);
             }
             catch (Exception ex)
             {
@@ -34,11 +35,11 @@ public static class PessoaEndpoint
             }
         });
 
-        grupo.MapGet("/cpf/{cpf}", async (PessoaRepositorio repositorio, string cpf) =>
+        grupo.MapGet("/tipo/{tipo}", async (ContatoRepositorio repositorio, ETipoContato tipo) =>
         {
             try
             {
-                return await repositorio.ListarPorCpf(cpf);
+                return await repositorio.ListarPorTipo(tipo);
             }
             catch (Exception ex)
             {
@@ -46,19 +47,7 @@ public static class PessoaEndpoint
             }
         });
 
-        grupo.MapGet("/data_nascimento/", async (PessoaRepositorio repositorio, DateTime dtInicio, DateTime dtTermino) =>
-        {
-            try
-            {
-                return await repositorio.ListarPorDataNascimento(dtInicio, dtTermino);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        });
-
-        grupo.MapGet("/{id}", async (PessoaRepositorio repositorio, Guid id) =>
+        grupo.MapGet("/{id}", async (ContatoRepositorio repositorio, Guid id) =>
         {
             try
             {
@@ -70,7 +59,7 @@ public static class PessoaEndpoint
             }
         });
 
-        grupo.MapPost("/", async (PessoaRepositorio repositorio, Pessoa obj) =>
+        grupo.MapPost("/", async (ContatoRepositorio repositorio, Contato obj) =>
         {
             try
             {
@@ -83,7 +72,7 @@ public static class PessoaEndpoint
             }
         });
 
-        grupo.MapDelete("/{id}", async (PessoaRepositorio repositorio, Guid id) =>
+        grupo.MapDelete("/{id}", async (ContatoRepositorio repositorio, Guid id) =>
         {
             try
             {
