@@ -362,3 +362,5 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /DevTech.FlexKit.Certificacao.Console
+/DevTech.RegistroContatos.Dados/Migrations
+/DevTech.RegistroContatos.Api/appsettings.json
